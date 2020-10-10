@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FLOWERS</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #big,#small{
+            float: left;
+            width: 600px;
+            height: 340px;
+            position: relative;
+        }
+        #small img{
+            width: 100%;
+            height: 100%;
+        }
+        #big{
+            overflow: hidden;
+            display: none;
+        }
+        #select{
+            position: absolute;
+            top:0;
+            left:0;
+            width: 30%;
+            height: 30%;
+            background: #6cf;
+            opacity: 0.5;
+            filter:alpha(opacity=50);
+            display:none;
+        }
+        #big img{
+            position: absolute;
+            top:0;
+            left: 0;
+        }
+        #mask{
+            height: 100%;
+            position: absolute;
+            top:0;
+            left: 0;
+            z-index: 1;
+            background: #6cf;
+            width: 100%;
+            opacity: 0;
+            filter:alpha(opacity=0);
+        }
+    </style>
+</head>
+<body>
+<div id="small">
+    <img src="flowers.jpg" alt="error"/>
+    <div id="select"></div>
+    <div id="mask"></div>
+</div>
+<div id="big">
+    <img src="flowers.jpg" alt="error"/>
+</div>
+<script>
+    var oSmall=document.getElementById("small"),
+            oMask=document.getElementById("mask"),
+            oBig=document.getElementById("big"),
+            oImg=oBig.getElementsByTagName("img")[0],
+            oSelect=document.getElementById("select");
+    oMask.onmouseover=function(){
+        oBig.style.display="block";
+        oSelect.style.display="block";
+        oMask.onmousemove=function(e){
+            e=e||window.event;
+            oSelect.style.top= e.clientY-0.5*oSelect.offsetHeight+"px";
+            oSelect.style.left= e.clientX-0.5*oSelect.offsetWidth+"px";
+            if(e.clientY-0.5*oSelect.offsetHeight<=0){
+                oSelect.style.top=0;
+            }
+            if(e.clientY-0.5*oSelect.offsetHeight>=oSmall.offsetHeight-oSelect.offsetHeight){
+                oSelect.style.top=oSmall.offsetHeight-oSelect.offsetHeight+"px";
+            }
+            if( e.clientX-0.5*oSelect.offsetWidth<=0){
+                oSelect.style.left=0;
+            }
+            if( e.clientX-0.5*oSelect.offsetWidth>=oSmall.offsetWidth-oSelect.offsetWidth){
+                oSelect.style.left=oSmall.offsetWidth-oSelect.offsetWidth+"px";
+            }
+            oImg.style.left=-oSelect.offsetLeft/(oSmall.offsetWidth-oSelect.offsetWidth)*(oImg.offsetWidth-oBig.offsetWidth)+"px";
+            oImg.style.top=-oSelect.offsetTop/(oSmall.offsetHeight-oSelect.offsetHeight)*(oImg.offsetHeight-oBig.offsetHeight)+"px";
+        };
+    };
+    oMask.onmouseout=function(){
+        oBig.style.display="none";
+        oSelect.style.display="none";
+    };
+</script>
+</body>
+</html>
